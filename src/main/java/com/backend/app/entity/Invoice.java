@@ -1,17 +1,34 @@
 package com.backend.app.entity;
 
 
-import com.backend.app.enums.DunningLevel;
-import com.backend.app.enums.InvoiceStatus;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.backend.app.enums.DunningLevel;
+import com.backend.app.enums.InvoiceStatus;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "invoice",
@@ -38,33 +55,31 @@ public class Invoice {
     @NotNull private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private InvoiceStatus status = InvoiceStatus.OPEN;
 
-    @Builder.Default private int totalCents = 0;
-    @Builder.Default private int paidCents = 0;
+    private int totalCents = 0;
+   private int paidCents = 0;
 
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private DunningLevel dunningLevel = DunningLevel.NONE;
 
     @CreationTimestamp
     private Instant createdAt;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude @Builder.Default
+    @ToString.Exclude
     private List<InvoiceItem> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-    @ToString.Exclude @Builder.Default
+    @ToString.Exclude 
     private List<Payment> payments = new ArrayList<>();
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude @Builder.Default
+    @ToString.Exclude 
     private List<DunningLog> dunningLogs = new ArrayList<>();
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-    @ToString.Exclude @Builder.Default
+    @ToString.Exclude
     private List<Attachment> attachments = new ArrayList<>();
 
     @Transient

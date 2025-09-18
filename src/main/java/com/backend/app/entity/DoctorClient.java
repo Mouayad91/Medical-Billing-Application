@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "doctor_client")
@@ -40,6 +41,6 @@ public class DoctorClient {
 
     @OneToMany(mappedBy = "provider")
     @ToString.Exclude
-    @Builder.Default
+
     private List<Invoice> invoices = new ArrayList<>();
 }

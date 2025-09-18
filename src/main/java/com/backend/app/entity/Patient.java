@@ -42,6 +42,6 @@ public class Patient {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "patient")
-    @ToString.Exclude @Builder.Default
+    @ToString.Exclude
     private List<Invoice> invoices = new ArrayList<>();
 }
