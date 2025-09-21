@@ -1,21 +1,23 @@
 package com.backend.app.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.backend.app.enums.PayerType;
 
 import lombok.Data;
 
+/**
+ * Request DTO für POST /debtors 
+ * Zweck: Rechnungsempfänger (Zahler/Patient/Versicherung) anlegen - ohne Debtor keine Rechnung möglich
+ * Verwendet von: ROLE_BILLING, ROLE_ADMIN
+ */
 @Data
-public class PatientResponseDTO {
-    private Long id;
+public class CreateDebtorRequestDTO {
     private String firstName;
     private String lastName;
-    private LocalDate dob;
+    private LocalDate dateOfBirth;
     private String email;
     private String address;
     private PayerType payerType;
     private String payerDetails;
-    private LocalDateTime createdAt;
 }

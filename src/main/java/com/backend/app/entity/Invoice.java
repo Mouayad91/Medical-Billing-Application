@@ -46,7 +46,7 @@ public class Invoice {
     private Long id;
 
     @ManyToOne(optional = false) @JoinColumn(name="provider_id")
-    @NotNull private DoctorClient provider;
+    @NotNull private Provider provider;
 
     @ManyToOne(optional = false) @JoinColumn(name="patient_id")
     @NotNull private Patient patient;
