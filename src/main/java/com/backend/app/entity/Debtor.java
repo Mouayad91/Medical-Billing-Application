@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "patient",
-        indexes = {@Index(name="ix_patient_name", columnList="lastName,firstName")})
+@Table(name = "debtor",
+        indexes = {@Index(name="ix_debtor_name", columnList="lastName,firstName")})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient {
+public class Debtor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -41,7 +41,7 @@ public class Patient {
     @CreationTimestamp
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "debtor")
     @ToString.Exclude
     private List<Invoice> invoices = new ArrayList<>();
 }

@@ -34,7 +34,7 @@ import lombok.ToString;
 @Table(name = "invoice",
         indexes = {
                 @Index(name="ix_invoice_provider", columnList="provider_id"),
-                @Index(name="ix_invoice_patient", columnList="patient_id"),
+                @Index(name="ix_invoice_debtor", columnList="debtor_id"),
                 @Index(name="ix_invoice_status", columnList="status"),
                 @Index(name="ix_invoice_due", columnList="dueDate")
         })
@@ -48,8 +48,8 @@ public class Invoice {
     @ManyToOne(optional = false) @JoinColumn(name="provider_id")
     @NotNull private Provider provider;
 
-    @ManyToOne(optional = false) @JoinColumn(name="patient_id")
-    @NotNull private Patient patient;
+    @ManyToOne(optional = false) @JoinColumn(name="debtor_id")
+    @NotNull private Debtor debtor;
 
     @NotNull private LocalDate invoiceDate;
     @NotNull private LocalDate dueDate;

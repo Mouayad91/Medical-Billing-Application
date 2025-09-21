@@ -14,7 +14,7 @@ public class InvoiceSearchParamsDTO {
     private LocalDate from;
     private LocalDate to;
     private String providerName;
-    private String patientName;
+    private String debtorName;
     private Integer page;
     private Integer size;
     private String sort;

@@ -13,7 +13,7 @@ import lombok.Data;
 public class InvoiceResponseDTO {
     private Long id;
     private String providerName;
-    private String patientDisplay;
+    private String debtorDisplay;
     private LocalDate invoiceDate;
     private LocalDate dueDate;
     private InvoiceStatus status;
