@@ -10,6 +10,9 @@ import com.backend.app.entity.Provider;
 import com.backend.app.exception.ApiException;
 import com.backend.app.repository.ProviderRepository;
 import com.backend.app.service.ProviderService;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class ProviderServiceImpl implements ProviderService {
@@ -38,5 +41,22 @@ public class ProviderServiceImpl implements ProviderService {
         Provider saved = providerRepository.save(provider);
 
         return modelMapper.map(saved, ProviderResponseDTO.class);
+    }
+
+
+    @Override
+    public List<ProviderResponseDTO> getAllProviders() {
+       
+        List<Provider> providers = providerRepository.findAll(); // get all Provider entities from repository
+
+        if (providers.isEmpty()) {
+            throw new ApiException("No providers found");
+        }
+
+        List<ProviderResponseDTO> providerResponseDTOs = providers.stream()
+                .map(provider -> modelMapper.map(provider, ProviderResponseDTO.class))
+                .collect(Collectors.toList());
+
+        return providerResponseDTOs;
     }
 }
