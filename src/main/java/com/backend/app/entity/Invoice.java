@@ -46,13 +46,17 @@ public class Invoice {
     private Long id;
 
     @ManyToOne(optional = false) @JoinColumn(name="provider_id")
-    @NotNull private Provider provider;
+    @NotNull 
+    private Provider provider;
 
     @ManyToOne(optional = false) @JoinColumn(name="debtor_id")
-    @NotNull private Debtor debtor;
+    @NotNull 
+    private Debtor debtor;
 
-    @NotNull private LocalDate invoiceDate;
-    @NotNull private LocalDate dueDate;
+    @NotNull 
+    private LocalDate invoiceDate;
+    @NotNull 
+    private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status = InvoiceStatus.OPEN;
@@ -67,7 +71,7 @@ public class Invoice {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
+    @ToString.Exclude // Exclude from toString to prevent potential recursion issues
     private List<InvoiceItem> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
@@ -83,5 +87,7 @@ public class Invoice {
     private List<Attachment> attachments = new ArrayList<>();
 
     @Transient
-    public int getOpenCents() { return Math.max(totalCents - paidCents, 0); }
+    public int getOpenCents() {
+         return Math.max(totalCents - paidCents, 0); 
+        }
 }
