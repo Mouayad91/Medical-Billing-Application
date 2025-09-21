@@ -6,12 +6,17 @@ import org.springframework.stereotype.Service;
 
 import com.backend.app.dto.CreateProviderRequestDTO;
 import com.backend.app.dto.ProviderResponseDTO;
+import com.backend.app.dto.ProviderPageResponseDTO;
 import com.backend.app.entity.Provider;
 import com.backend.app.exception.ApiException;
 import com.backend.app.repository.ProviderRepository;
 import com.backend.app.service.ProviderService;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 
 @Service
@@ -45,18 +50,70 @@ public class ProviderServiceImpl implements ProviderService {
 
 
     @Override
-    public List<ProviderResponseDTO> getAllProviders() {
-       
-        List<Provider> providers = providerRepository.findAll(); // get all Provider entities from repository
-
-        if (providers.isEmpty()) {
+    public ProviderPageResponseDTO getAllProviders(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sortByAndOrder = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageDetails = PageRequest.of(pageNo, pageSize, sortByAndOrder);
+        
+        Page<Provider> providersPage = providerRepository.findAll(pageDetails);
+        
+        if (providersPage.isEmpty()) {
             throw new ApiException("No providers found");
         }
 
-        List<ProviderResponseDTO> providerResponseDTOs = providers.stream()
+        List<ProviderResponseDTO> providerResponseDTOs = providersPage.getContent().stream()
                 .map(provider -> modelMapper.map(provider, ProviderResponseDTO.class))
                 .collect(Collectors.toList());
 
-        return providerResponseDTOs;
+        ProviderPageResponseDTO response = new ProviderPageResponseDTO();
+        response.setContent(providerResponseDTOs);
+        response.setPageNo(providersPage.getNumber());
+        response.setPageSize(providersPage.getSize());
+        response.setTotalElements(providersPage.getTotalElements());
+        response.setTotalPages(providersPage.getTotalPages());
+        response.setLast(providersPage.isLast());
+        response.setFirst(providersPage.isFirst());
+        response.setSortBy(sortBy);
+        response.setSortDir(sortDir);
+
+        return response;
     }
+
+    @Override
+    public ProviderPageResponseDTO getProvidersByKeyword(String keyword, int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sortByAndOrder = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageDetails = PageRequest.of(pageNo, pageSize, sortByAndOrder);
+
+        Page<Provider> providersPage = providerRepository.findByNameContainingIgnoreCase(keyword, pageDetails);
+
+        if (providersPage.isEmpty()) {
+            throw new ApiException("No providers found with keyword: " + keyword);
+        }
+
+        List<ProviderResponseDTO> providerResponseDTOs = providersPage.getContent().stream()
+                .map(provider -> modelMapper.map(provider, ProviderResponseDTO.class))
+                .collect(Collectors.toList());
+        
+        ProviderPageResponseDTO response = new ProviderPageResponseDTO();
+        response.setContent(providerResponseDTOs);
+        response.setPageNo(providersPage.getNumber());
+        response.setPageSize(providersPage.getSize());
+        response.setTotalElements(providersPage.getTotalElements());
+        response.setTotalPages(providersPage.getTotalPages());
+        response.setLast(providersPage.isLast());
+        response.setFirst(providersPage.isFirst());
+        response.setSortBy(sortBy);
+        response.setSortDir(sortDir);
+
+        return response;
+    }
+
+    @Override
+    public ProviderResponseDTO getProviderById(Long id) {
+        Provider provider = providerRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Provider with id " + id + " not found"));
+        
+        return modelMapper.map(provider, ProviderResponseDTO.class);
+    }
+
+
 }
