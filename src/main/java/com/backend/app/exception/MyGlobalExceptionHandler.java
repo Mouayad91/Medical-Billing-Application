@@ -49,6 +49,17 @@ public class MyGlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<CustomErrorResponse> handleConflictException(ConflictException ex, HttpServletRequest request) {
+        CustomErrorResponse error = new CustomErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
         CustomErrorResponse error = new CustomErrorResponse(
