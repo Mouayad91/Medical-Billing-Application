@@ -28,10 +28,11 @@ import com.backend.app.enums.InvoiceStatus;
 import com.backend.app.service.InvoiceService;
 
 import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1")
 public class InvoiceController {
-    
+
     @Autowired
     private InvoiceService invoiceService;
 
@@ -45,55 +46,52 @@ public class InvoiceController {
             @RequestParam(required = false) DunningLevel dunning,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
-            @RequestParam(required = false) String provider,
-            @RequestParam(required = false) String debtor,
             @PageableDefault(size = 20, sort = "dueDate", direction = Sort.Direction.ASC) Pageable pageable) {
-        
+
         Page<InvoiceSummaryDTO> invoices = invoiceService.getAllInvoices(
-            status, dunning, from, to, provider, debtor, pageable
+                status, dunning, from, to, null, null, pageable
         );
-        
+
         return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
 
     @PostMapping("/invoices")
-    public ResponseEntity<InvoiceResponseDTO> createInvoice(@Valid @RequestBody CreateInvoiceRequestDTO createInvoiceRequestDTO){
+    public ResponseEntity<InvoiceResponseDTO> createInvoice(@Valid @RequestBody CreateInvoiceRequestDTO createInvoiceRequestDTO) {
 
         InvoiceResponseDTO savedInvoice = invoiceService.createInvoice(createInvoiceRequestDTO);
 
         return new ResponseEntity<>(savedInvoice, HttpStatus.CREATED);
     }
-    
 
     @GetMapping("/invoices/{id}")
     public ResponseEntity<InvoiceResponseDTO> getInvoiceById(@PathVariable Long id) {
         InvoiceResponseDTO invoice = invoiceService.getInvoiceById(id);
         return new ResponseEntity<>(invoice, HttpStatus.OK);
     }
-    
+
     /**
-     * Rechnungsänderung für administrative Korrekturen vor Versand
-     * Verhindert Änderungen nach bereits gestarteten Mahnverfahren
+     * Rechnungsänderung für administrative Korrekturen vor Versand Verhindert
+     * Änderungen nach bereits gestarteten Mahnverfahren
      */
     @PutMapping("/invoices/{id}")
     public ResponseEntity<InvoiceResponseDTO> updateInvoice(
-            @PathVariable Long id, 
+            @PathVariable Long id,
             @Valid @RequestBody UpdateInvoiceRequestDTO updateRequest) {
-        
+
         InvoiceResponseDTO updatedInvoice = invoiceService.updateInvoice(id, updateRequest);
-        
+
         return new ResponseEntity<>(updatedInvoice, HttpStatus.OK);
     }
-    
+
     /**
-     * Rechnungsstornierung für fehlerhafte oder stornierte Leistungen
-     * Nur bei unbezahlten Rechnungen möglich um Zahlungsausgleich zu vermeiden
+     * Rechnungsstornierung für fehlerhafte oder stornierte Leistungen Nur bei
+     * unbezahlten Rechnungen möglich um Zahlungsausgleich zu vermeiden
      */
     @PostMapping("/invoices/{id}/cancel")
     public ResponseEntity<InvoiceResponseDTO> cancelInvoice(@PathVariable Long id) {
-        
+
         InvoiceResponseDTO cancelledInvoice = invoiceService.cancelInvoice(id);
-        
+
         return new ResponseEntity<>(cancelledInvoice, HttpStatus.OK);
     }
 }
