@@ -4,11 +4,7 @@ import java.time.Instant;
 
 import lombok.Data;
 
-/**
- * Response DTO für POST /invoices/{id}/attachments  
- * Zweck: Bestätigung des Dokumenten-Uploads mit Download-URL - Korrespondenz-Management
- * Verwendet von: ROLE_BILLING, ROLE_COLLECTIONS, ROLE_ADMIN
- */
+/** Upload-Bestätigung mit Dokument-ID und Download-Link für Archivierung */
 @Data
 public class AttachmentUploadResponseDTO {
     private Long id;

@@ -28,6 +28,7 @@ public class ServiceCatalogController {
 
 
 
+    /** Neue abrechenbare Leistung im Katalog anlegen */
     @PostMapping("/services")
     public ResponseEntity<ServiceResponseDTO> createService(@RequestBody CreateServiceRequestDTO createServiceRequestDTO){
 
@@ -37,11 +38,7 @@ public class ServiceCatalogController {
 
     }
 
-    /**
-     * GET /services
-     * Zweck: Alle Services mit Paginierung und Sortierung auflisten
-     * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
-     */
+    /** Leistungskatalog mit Pagination für Rechnungserstellung */
     @GetMapping("/services")
     public ResponseEntity<ServicePageResponseDTO> getAllServices(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNo,
@@ -53,22 +50,14 @@ public class ServiceCatalogController {
         return new ResponseEntity<>(services, HttpStatus.OK);
     }
 
-    /**
-     * GET /services/{id}
-     * Zweck: Einzelner Service nach ID
-     * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
-     */
+    /** Einzelne Leistung nach ID für Rechnungsposition abrufen */
     @GetMapping("/services/{id}")
     public ResponseEntity<ServiceResponseDTO> getServiceById(@PathVariable Long id) {
         ServiceResponseDTO service = serviceCatalogService.getServiceById(id);
         return new ResponseEntity<>(service, HttpStatus.OK);
     }
 
-    /**
-     * GET /services?code=GOÄ
-     * Zweck: Services nach Code/Beschreibung suchen mit Paginierung und Sortierung
-     * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
-     */
+    /** Leistungen nach Code oder Beschreibung durchsuchen */
     @GetMapping(value = "/services", params = "code")
     public ResponseEntity<ServicePageResponseDTO> getServicesByKeyword(
             @RequestParam("code") String keyword,

@@ -8,11 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Response DTO für POST /invoices/{id}/payments
- * Zweck: Antwort nach erfolgreicher Zahlungsbuchung
- * Verwendet von: ROLE_COLLECTIONS, ROLE_BILLING, ROLE_ADMIN
- */
+/** Bestätigung eines erfassten Zahlungseingangs mit Referenzdaten */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

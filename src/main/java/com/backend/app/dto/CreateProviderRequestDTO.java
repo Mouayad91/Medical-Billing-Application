@@ -7,11 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-/**
- * Request DTO für POST /providers
- * Zweck: Abrechnungspartner (Ärzte/Praxen/Kliniken) anlegen - ohne Provider keine Rechnung möglich
- * Verwendet von: ROLE_BILLING, ROLE_ADMIN
- */
+/** Neuen Abrechnungspartner (Arzt/Praxis/Klinik) mit Steuerdaten anlegen */
 
 public class CreateProviderRequestDTO {
     private String name;

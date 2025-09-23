@@ -6,11 +6,7 @@ import com.backend.app.enums.ProviderType;
 
 import lombok.Data;
 
-/**
- * Response DTO für GET /providers, GET /providers/{id}
- * Zweck: Abrechnungspartner-Daten zurückgeben für Suche, Einzelansicht und Rechnungserstellung
- * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
- */
+/** Abrechnungspartner-Stammdaten für Auswahl und Rechnungszuordnung */
 @Data
 public class ProviderResponseDTO {
     private Long id;

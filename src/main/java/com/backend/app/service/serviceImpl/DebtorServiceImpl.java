@@ -1,24 +1,25 @@
 package com.backend.app.service.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.backend.app.dto.CreateDebtorRequestDTO;
-import com.backend.app.dto.DebtorResponseDTO;
 import com.backend.app.dto.DebtorPageResponseDTO;
+import com.backend.app.dto.DebtorResponseDTO;
 import com.backend.app.entity.Debtor;
 import com.backend.app.exception.ApiException;
 import com.backend.app.repository.DebtorRepository;
 import com.backend.app.service.DebtorService;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-
+/** Service für Rechnungsempfänger-Verwaltung (Patienten) */
 @Service
 public class DebtorServiceImpl implements DebtorService {
 
@@ -31,7 +32,7 @@ public class DebtorServiceImpl implements DebtorService {
     @Override
     public DebtorResponseDTO createDebtor(CreateDebtorRequestDTO createDebtorRequestDTO) {
 
-        // Check if debtor with same name already exists
+        // Prüfen ob Rechnungsempfänger mit gleichem Namen bereits existiert
         Debtor debtorFromDB = debtorRepository.findByFirstNameAndLastName(
                 createDebtorRequestDTO.getFirstName(), 
                 createDebtorRequestDTO.getLastName());
@@ -41,7 +42,7 @@ public class DebtorServiceImpl implements DebtorService {
                     " " + createDebtorRequestDTO.getLastName() + " already exists");
         }
 
-        // Manual mapping to avoid ModelMapper issues
+        // Manuelle Zuordnung um ModelMapper-Probleme zu vermeiden
         Debtor debtor = new Debtor();
         debtor.setFirstName(createDebtorRequestDTO.getFirstName());
         debtor.setLastName(createDebtorRequestDTO.getLastName());

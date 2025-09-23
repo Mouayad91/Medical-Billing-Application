@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import lombok.Data;
 
+/** Einzelne Rechnungsposition mit Leistungsdetails und berechneten Preisen */
 @Data
 public class InvoiceItemResponseDTO {
     private Long id;

@@ -27,11 +27,7 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    /**
-     * POST /invoices/{id}/payments
-     * Zahlung zu einer Rechnung hinzufügen
-     * Rollen: COLLECTIONS, BILLING, ADMIN (TODO: Security implementation needed)
-     */
+    /** Zahlungseingang für Rechnung erfassen mit Duplikatschutz */
     @PostMapping("/invoices/{id}/payments")
     public ResponseEntity<PaymentResponseDTO> addPaymentToInvoice(
             @PathVariable Long id,
@@ -42,11 +38,7 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    /**
-     * GET /invoices/{id}/payments
-     * Zahlungshistorie einer Rechnung anzeigen
-     * Rollen: COLLECTIONS, BILLING, CONTROLLER, ADMIN (TODO: Security implementation needed)
-     */
+    /** Zahlungshistorie der Rechnung chronologisch abrufen */
     @GetMapping("/invoices/{id}/payments")
     public ResponseEntity<List<PaymentSummaryDTO>> getPaymentsByInvoice(@PathVariable Long id) {
         

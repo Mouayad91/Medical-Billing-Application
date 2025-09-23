@@ -4,11 +4,7 @@ import java.time.Instant;
 
 import lombok.Data;
 
-/**
- * Response DTO für GET /services, GET /services/{id}
- * Zweck: Leistungskatalog-Daten für Suche, Einzelansicht und Rechnungserstellung
- * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
- */
+/** Leistung aus dem Katalog mit Preisen für die Rechnungserstellung */
 @Data
 public class ServiceResponseDTO {
     private Long id;

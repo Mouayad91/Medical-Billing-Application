@@ -36,17 +36,8 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     /**
-     * GET /invoices
-     * 
-     * Zweck: Worklists (z. B. offene/past-due Rechnungen), Reporting-Filter.
-     * Rollen: BILLING, CONTROLLER, COLLECTIONS, ADMIN
-     * 
-     * Query Parameter:
-     * - status: OPEN|PARTIALLY_PAID|PAID|CANCELLED
-     * - dunning: NONE|LEVEL_1|LEVEL_2|COLLECTION
-     * - from/to: YYYY-MM-DD (nach invoiceDate)
-     * - provider/debtor: Namenssuche
-     * - page,size,sort: Pagination
+     * Rechnungsliste mit erweiterten Filteroptionen für Workflow-Management
+     * Unterstützt Statusfilterung, Mahnstufensuche und Zeitraumabfragen
      */
     @GetMapping("/invoices")
     public ResponseEntity<Page<InvoiceSummaryDTO>> getAllInvoices(
@@ -81,12 +72,8 @@ public class InvoiceController {
     }
     
     /**
-     * PATCH /invoices/{id}
-     * 
-     * Zweck: z. B. Fälligkeitsdatum korrigieren (vor Dunning).
-     * Rollen: BILLING, ADMIN
-     * 
-     * Geschäftsregel: DueDate-Änderung nach Mahnlauf blocken (Datenintegrität).
+     * Rechnungsänderung für administrative Korrekturen vor Versand
+     * Verhindert Änderungen nach bereits gestarteten Mahnverfahren
      */
     @PutMapping("/invoices/{id}")
     public ResponseEntity<InvoiceResponseDTO> updateInvoice(
@@ -99,12 +86,8 @@ public class InvoiceController {
     }
     
     /**
-     * POST /invoices/{id}/cancel
-     * 
-     * Zweck: Storno nur solange unbezahlt.
-     * Rollen: BILLING, ADMIN
-     * 
-     * Geschäftsregel: paidCents>0 → nicht erlaubt (409)
+     * Rechnungsstornierung für fehlerhafte oder stornierte Leistungen
+     * Nur bei unbezahlten Rechnungen möglich um Zahlungsausgleich zu vermeiden
      */
     @PostMapping("/invoices/{id}/cancel")
     public ResponseEntity<InvoiceResponseDTO> cancelInvoice(@PathVariable Long id) {

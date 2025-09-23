@@ -8,11 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-/**
- * Request DTO für POST /invoices/{id}/payments
- * Zweck: Zahlung zu Rechnung hinzufügen - Kern des Forderungsmanagements mit Statusaktualisierung  
- * Verwendet von: ROLE_COLLECTIONS, ROLE_BILLING, ROLE_ADMIN
- */
+/** Zahlungseingang zu bestehender Rechnung mit Validierung erfassen */
 @Data
 public class AddPaymentRequestDTO {
     

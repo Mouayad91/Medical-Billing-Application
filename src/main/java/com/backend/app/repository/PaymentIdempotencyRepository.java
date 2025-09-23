@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.backend.app.entity.PaymentIdempotency;
 
+/** Repository für Zahlungs-Duplikatschutz und Idempotenz-Tokens */
 @Repository
 public interface PaymentIdempotencyRepository extends JpaRepository<PaymentIdempotency, Long> {
     

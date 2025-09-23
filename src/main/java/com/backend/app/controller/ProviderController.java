@@ -29,13 +29,7 @@ public class ProviderController {
 
 
 
-    /* Provider erstellen 
-     * POST /providers
-     * Zweck: Abrechnungspartner (Ärzte/Praxen/Kliniken) anlegen - ohne Provider keine Rechnung möglich
-     * Verwendet von: ROLE_BILLING,ROLE_ADMIN
-    */
-
-
+    /** Neuen Abrechnungspartner (Arzt/Praxis/Klinik) anlegen */
     @PostMapping("/providers")
     public ResponseEntity<ProviderResponseDTO> createProvider(@RequestBody CreateProviderRequestDTO createProviderRequestDTO){
 
@@ -45,11 +39,7 @@ public class ProviderController {
 
     }
 
-    /**
-     * GET /providers
-     * Zweck: Alle Provider mit Paginierung und Sortierung auflisten
-     * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
-     */
+    /** Alle Abrechnungspartner mit Pagination und Sortierung */
     @GetMapping("/providers")
     public ResponseEntity<ProviderPageResponseDTO> getAllProviders(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNo,
@@ -61,22 +51,14 @@ public class ProviderController {
         return new ResponseEntity<>(providers, HttpStatus.OK);
     }
 
-    /**
-     * GET /providers/{id}
-     * Zweck: Einzelner Provider nach ID
-     * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
-     */
+    /** Einzelnen Abrechnungspartner nach ID abrufen */
     @GetMapping("/providers/{id}")
     public ResponseEntity<ProviderResponseDTO> getProviderById(@PathVariable Long id) {
         ProviderResponseDTO provider = providerService.getProviderById(id);
         return new ResponseEntity<>(provider, HttpStatus.OK);
     }
 
-    /**
-     * GET /providers?name=...
-     * Zweck: Provider nach Name suchen mit Paginierung und Sortierung
-     * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
-     */
+    /** Abrechnungspartner nach Namen suchen für Rechnungserstellung */
     @GetMapping(value = "/providers", params = "name")
     public ResponseEntity<ProviderPageResponseDTO> getProvidersByKeyword(
             @RequestParam("name") String keyword,

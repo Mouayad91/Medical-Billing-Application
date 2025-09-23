@@ -9,18 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Invoice Summary DTO
- * 
- * Zweck: Übersichtsliste aller Rechnungen für Worklists und Reports.
- * Verwendung: GET /api/v1/invoices (gefiltert/paginiert) 
- * 
- * Funktionen:
- * - Kompakte Rechnungsübersicht ohne Items/Payments
- * - Status-Filter für offene/bezahlte/stornierte Rechnungen
- * - Mahnstand-Anzeige für Inkasso-Workflows
- * - Performance-optimiert durch Projektion statt Full-Entity
- */
+/** Kompakte Rechnungsübersicht für Listen, Workflows und Reports */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

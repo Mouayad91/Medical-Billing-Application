@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.backend.app.entity.Debtor;
 
+/** Repository für Rechnungsempfänger (Patienten) */
 @Repository
 public interface DebtorRepository extends JpaRepository<Debtor, Long> {
     

@@ -24,6 +24,7 @@ import com.backend.app.repository.PaymentIdempotencyRepository;
 import com.backend.app.repository.PaymentRepository;
 import com.backend.app.service.PaymentService;
 
+/** Service für Zahlungseingänge und Rechnungsausgleich */
 @Service
 public class PaymentServiceImpl implements PaymentService {
     
@@ -39,38 +40,35 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public PaymentResponseDTO addPaymentToInvoice(Long invoiceId, AddPaymentRequestDTO request, String idempotencyKey) {
-        // Input validation
         if (request.getAmountCents() == null || request.getAmountCents() <= 0) {
             throw new ApiException("amountCents must be greater than 0");
         }
         
-        // Check idempotency key if provided
+        // Doppelzahlungen mit Idempotenz-Schlüssel verhindern
         if (idempotencyKey != null && !idempotencyKey.trim().isEmpty()) {
             Optional<PaymentIdempotency> existing = paymentIdempotencyRepository.findByIdempotencyKey(idempotencyKey);
             if (existing.isPresent()) {
-                // Return existing payment (this is not an error, it's expected behavior)
                 Payment existingPayment = paymentRepository.findById(existing.get().getPaymentId())
                     .orElseThrow(() -> new ApiException("Idempotency conflict: payment not found"));
                 return mapToResponseDTO(existingPayment);
             }
         }
         
-        // Find invoice
         Invoice invoice = invoiceRepository.findById(invoiceId)
             .orElseThrow(() -> new ApiException("Invoice not found with id: " + invoiceId));
             
-        // Business rule: prevent payment on cancelled invoices
+        // Geschäftsregel: stornierte Rechnungen können nicht bezahlt werden
         if (invoice.getStatus() == InvoiceStatus.CANCELLED) {
             throw new ApiException("Cannot add payment to cancelled invoice");
         }
         
-        // Business rule: prevent overpayment
+        // Geschäftsregel: Überzahlungen verhindern
         int openCents = invoice.getOpenCents();
         if (request.getAmountCents() > openCents) {
             throw new ConflictException("Payment amount (" + request.getAmountCents() + " cents) exceeds open amount (" + openCents + " cents)");
         }
         
-        // Create payment
+        // Zahlung erstellen
         Payment payment = new Payment();
         payment.setInvoice(invoice);
         payment.setAmountCents(request.getAmountCents());
@@ -78,20 +76,19 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setMethod(request.getMethod());
         payment.setNote(request.getNote());
         
-        // Save payment
         payment = paymentRepository.save(payment);
         
-        // Update invoice balances and status
+        // Rechnungssaldo und Status aktualisieren
         updateInvoiceAfterPayment(invoice, request.getAmountCents());
         
-        // Store idempotency key if provided
+        // Idempotenz-Schlüssel speichern zur Duplikatsprävention (läuft nach 24h ab)
         if (idempotencyKey != null && !idempotencyKey.trim().isEmpty()) {
             PaymentIdempotency idempotencyRecord = new PaymentIdempotency();
             idempotencyRecord.setIdempotencyKey(idempotencyKey);
             idempotencyRecord.setInvoiceId(invoiceId);
             idempotencyRecord.setPaymentId(payment.getId());
             idempotencyRecord.setCreatedAt(Instant.now());
-            idempotencyRecord.setExpiresAt(Instant.now().plus(24, ChronoUnit.HOURS)); // Expire after 24h
+            idempotencyRecord.setExpiresAt(Instant.now().plus(24, ChronoUnit.HOURS));
             paymentIdempotencyRepository.save(idempotencyRecord);
         }
         
@@ -100,7 +97,6 @@ public class PaymentServiceImpl implements PaymentService {
     
     @Override
     public List<PaymentSummaryDTO> getPaymentsByInvoiceId(Long invoiceId) {
-        // Verify invoice exists
         if (!invoiceRepository.existsById(invoiceId)) {
             throw new ApiException("Invoice not found with id: " + invoiceId);
         }
@@ -111,20 +107,17 @@ public class PaymentServiceImpl implements PaymentService {
             .collect(Collectors.toList());
     }
     
+    /** Rechnungssaldo und Status nach Zahlungseingang aktualisieren */
     private void updateInvoiceAfterPayment(Invoice invoice, int paymentAmount) {
-        // Update paid amount
         invoice.setPaidCents(invoice.getPaidCents() + paymentAmount);
         
-        // Update status based on payment
+        // Status basierend auf Restsaldo aktualisieren
         int newOpenCents = invoice.getOpenCents();
         if (newOpenCents == 0) {
-            // Fully paid
             invoice.setStatus(InvoiceStatus.PAID);
         } else if (invoice.getPaidCents() > 0 && invoice.getStatus() == InvoiceStatus.OPEN) {
-            // First payment - change to partially paid
             invoice.setStatus(InvoiceStatus.PARTIALLY_PAID);
         }
-        // If already PARTIALLY_PAID and still open, keep PARTIALLY_PAID
         
         invoiceRepository.save(invoice);
     }

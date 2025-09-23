@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** Ergebnis des Mahnlaufs mit Anzahl bearbeiteter Rechnungen */
+/** Einzelfehler beim CSV-Import mit Zeilennummer und Fehlermeldung */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DunningRunResponseDTO {
-    private Integer updatedCount;
+public class ImportErrorDTO {
+    private Integer row;
+    private String message;
 }

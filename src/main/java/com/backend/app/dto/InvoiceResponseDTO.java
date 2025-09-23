@@ -9,6 +9,7 @@ import com.backend.app.enums.InvoiceStatus;
 
 import lombok.Data;
 
+/** Vollständige Rechnungsdetails mit Positionen, Status und Zahlungsinformationen */
 @Data
 public class InvoiceResponseDTO {
     private Long id;

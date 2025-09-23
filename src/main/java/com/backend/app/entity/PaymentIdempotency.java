@@ -14,10 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Entity für Idempotency-Keys zur Verhinderung von Doppelbuchungen
- * Speichert bereits verarbeitete Payment-Requests
- */
+/** Prevents duplicate payment processing using idempotency keys */
 @Entity
 @Table(name = "payment_idempotency", 
        indexes = {@Index(name="ix_payment_idempotency_key", columnList="idempotencyKey", unique = true)})

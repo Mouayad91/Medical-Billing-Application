@@ -7,6 +7,7 @@ import com.backend.app.enums.InvoiceStatus;
 
 import lombok.Data;
 
+/** Suchfilter für Rechnungsabfragen mit Status, Mahnstufen und Zeitraum */
 @Data
 public class InvoiceSearchParamsDTO {
     private InvoiceStatus status;

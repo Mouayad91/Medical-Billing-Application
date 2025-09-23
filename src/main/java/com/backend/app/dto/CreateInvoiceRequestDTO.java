@@ -5,11 +5,7 @@ import java.util.List;
 
 import lombok.Data;
 
-/**
- * Request DTO für POST /invoices
- * Zweck: Rechnung erstellen (Provider + Debtor + Items) - Kern der Privatliquidation
- * Verwendet von: ROLE_BILLING, ROLE_ADMIN
- */
+/** Neue Rechnung mit Leistungspositionen und Fälligkeitsdaten erstellen */
 @Data
 public class CreateInvoiceRequestDTO {
     private Long providerId;

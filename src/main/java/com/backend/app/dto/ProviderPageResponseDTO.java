@@ -3,11 +3,7 @@ package com.backend.app.dto;
 import lombok.Data;
 import java.util.List;
 
-/**
- * Paginated Response DTO für GET /providers mit Paginierung
- * Zweck: Seitenweise Provider-Auflistung mit Metadaten für Navigation
- * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
- */
+/** Paginierte Antwort für Abrechnungspartner-Listen mit Navigation und Sortierung */
 @Data
 public class ProviderPageResponseDTO {
     private List<ProviderResponseDTO> content;

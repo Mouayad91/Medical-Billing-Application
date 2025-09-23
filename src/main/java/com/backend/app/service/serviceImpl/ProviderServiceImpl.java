@@ -1,24 +1,25 @@
 package com.backend.app.service.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.backend.app.dto.CreateProviderRequestDTO;
-import com.backend.app.dto.ProviderResponseDTO;
 import com.backend.app.dto.ProviderPageResponseDTO;
+import com.backend.app.dto.ProviderResponseDTO;
 import com.backend.app.entity.Provider;
 import com.backend.app.exception.ApiException;
 import com.backend.app.repository.ProviderRepository;
 import com.backend.app.service.ProviderService;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-
+/** Service für Abrechnungspartner-Verwaltung (Ärzte, Praxen, Kliniken) */
 @Service
 public class ProviderServiceImpl implements ProviderService {
 

@@ -29,7 +29,7 @@ import com.backend.app.repository.ProviderRepository;
 import com.backend.app.repository.ServiceCatalogRepository;
 import com.backend.app.service.InvoiceService;
 
-
+/** Service für Rechnungserstellung und -verwaltung */
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
     
@@ -52,26 +52,26 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceResponseDTO createInvoice(CreateInvoiceRequestDTO createInvoiceRequestDTO) {
 
-        // Validate input
+        // Eingabe validieren
         if (createInvoiceRequestDTO.getItems() == null || createInvoiceRequestDTO.getItems().isEmpty()) {
             throw new ApiException("Invoice must contain at least one item.");
         }
 
-        // Get Provider
+        // Abrechnungspartner laden
         Provider provider = providerRepository.findById(createInvoiceRequestDTO.getProviderId())
                 .orElseThrow(() -> new ApiException("Provider with id " + createInvoiceRequestDTO.getProviderId() + " not found"));
 
-        // Get Debtor  
+        // Rechnungsempfänger laden  
         Debtor debtor = debtorRepository.findById(createInvoiceRequestDTO.getDebtorId())
                 .orElseThrow(() -> new ApiException("Debtor with id " + createInvoiceRequestDTO.getDebtorId() + " not found"));
 
-        // Create Invoice
+        // Rechnung erstellen
         Invoice invoice = new Invoice();
         invoice.setProvider(provider);
         invoice.setDebtor(debtor);
         invoice.setInvoiceDate(createInvoiceRequestDTO.getInvoiceDate());
         
-        // Calculate due date
+        // Fälligkeitsdatum berechnen
         LocalDate dueDate = createInvoiceRequestDTO.getInvoiceDate()
                 .plusDays(createInvoiceRequestDTO.getDueInDays() != null ? createInvoiceRequestDTO.getDueInDays() : 14);
         invoice.setDueDate(dueDate);

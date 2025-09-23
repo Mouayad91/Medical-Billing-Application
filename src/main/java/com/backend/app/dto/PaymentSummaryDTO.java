@@ -6,6 +6,7 @@ import com.backend.app.enums.PaymentMethod;
 
 import lombok.Data;
 
+/** Kompakte Zahlungsübersicht für Rechnungshistorie */
 @Data
 public class PaymentSummaryDTO {
     private Long id;

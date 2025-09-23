@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.backend.app.entity.Provider;
 
+/** Repository für Abrechnungspartner (Ärzte, Praxen, Kliniken) */
 @Repository
 public interface ProviderRepository extends JpaRepository<Provider, Long> {
     

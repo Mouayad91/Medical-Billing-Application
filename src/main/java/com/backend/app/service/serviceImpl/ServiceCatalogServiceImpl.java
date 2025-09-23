@@ -1,22 +1,25 @@
 package com.backend.app.service.serviceImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
-import com.backend.app.entity.ServiceCatalog;
-import com.backend.app.repository.ServiceCatalogRepository;
-import com.backend.app.service.ServiceCatalogService;
-import com.backend.app.dto.ServiceResponseDTO;
-import com.backend.app.dto.CreateServiceRequestDTO;
-import com.backend.app.dto.ServicePageResponseDTO;
-import com.backend.app.exception.ApiException;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.Sort;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
+import com.backend.app.dto.CreateServiceRequestDTO;
+import com.backend.app.dto.ServicePageResponseDTO;
+import com.backend.app.dto.ServiceResponseDTO;
+import com.backend.app.entity.ServiceCatalog;
+import com.backend.app.exception.ApiException;
+import com.backend.app.repository.ServiceCatalogRepository;
+import com.backend.app.service.ServiceCatalogService;
+
+/** Service für Leistungskatalog und Abrechnungsleistungen */
 @Service
 public class ServiceCatalogServiceImpl implements ServiceCatalogService {
 
@@ -40,13 +43,13 @@ public class ServiceCatalogServiceImpl implements ServiceCatalogService {
             throw new ApiException("Service with code " + createServiceRequestDTO.getCode() + " already exists");
         }
 
-        // Create a new service
+        // Neue Leistung erstellen
         ServiceCatalog newService = new ServiceCatalog();
         newService.setCode(createServiceRequestDTO.getCode());
         newService.setDescription(createServiceRequestDTO.getDescription());
         newService.setBaseFeeCents(createServiceRequestDTO.getBaseFeeCents());
 
-        // Save the new service
+        // Neue Leistung speichern
         ServiceCatalog savedService = serviceCatalogRepository.save(newService);
 
 

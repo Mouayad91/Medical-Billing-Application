@@ -20,18 +20,6 @@ public interface InvoiceService {
 
     InvoiceResponseDTO getInvoiceById(Long id);
     
-    /**
-     * Get all invoices with filtering and pagination
-     * 
-     * @param status Filter by invoice status 
-     * @param dunningLevel Filter by dunning level 
-     * @param dateFrom Filter by invoice date from 
-     * @param dateTo Filter by invoice date to
-     * @param providerName Filter by provider name
-     * @param debtorName Filter by debtor name
-     * @param pageable Pagination and sorting
-     * @return Page of InvoiceSummaryDTO
-     */
     Page<InvoiceSummaryDTO> getAllInvoices(
         InvoiceStatus status,
         DunningLevel dunningLevel,
@@ -42,22 +30,7 @@ public interface InvoiceService {
         Pageable pageable
     );
     
-    /**
-     * Update invoice (e.g. due date correction)
-     * 
-     * @param id Invoice ID
-     * @param updateRequest Update data
-     * @return Updated invoice
-     * @throws ApiException if invoice cannot be updated (409 if already dunned)
-     */
     InvoiceResponseDTO updateInvoice(Long id, UpdateInvoiceRequestDTO updateRequest);
     
-    /**
-     * Cancel invoice (storno)
-     * 
-     * @param id Invoice ID
-     * @return Cancelled invoice
-     * @throws ApiException if invoice cannot be cancelled (409 if paid)
-     */
     InvoiceResponseDTO cancelInvoice(Long id);
 }

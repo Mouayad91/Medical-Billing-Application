@@ -6,11 +6,7 @@ import com.backend.app.enums.PayerType;
 
 import lombok.Data;
 
-/**
- * Request DTO für POST /debtors 
- * Zweck: Rechnungsempfänger (Zahler/Patient/Versicherung) anlegen - ohne Debtor keine Rechnung möglich
- * Verwendet von: ROLE_BILLING, ROLE_ADMIN
- */
+/** Neuen Rechnungsempfänger mit Adress- und Zahlerdaten anlegen */
 @Data
 public class CreateDebtorRequestDTO {
     private String firstName;

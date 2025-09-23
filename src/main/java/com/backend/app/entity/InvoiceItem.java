@@ -29,11 +29,11 @@ public class InvoiceItem {
 
     @Min(1) private int quantity;
 
-    // GOÄ-ähnlicher Steigerungsfaktor (vereinfacht)
+    // GOÄ-ähnlicher Steigerungsfaktor
     @Column(precision = 6, scale = 2)
     @NotNull private BigDecimal factor; // z. B. 2.30
 
     @Min(0) private int unitPriceCents;   // Snapshot aus ServiceCatalog
-    @Min(0) private int surchargeCents;   // Nacht/Notfall o. ä. (Demo)
+    @Min(0) private int surchargeCents;   // Nacht/Notfal
     @Min(0) private int lineTotalCents;   // vom Service berechnet
 }

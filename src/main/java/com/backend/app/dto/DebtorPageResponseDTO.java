@@ -3,11 +3,7 @@ package com.backend.app.dto;
 import lombok.Data;
 import java.util.List;
 
-/**
- * Paginated Response DTO für GET /debtors mit Paginierung
- * Zweck: Seitenweise Schuldner-Auflistung mit Metadaten für Navigation
- * Verwendet von: ROLE_BILLING, ROLE_CONTROLLER, ROLE_COLLECTIONS, ROLE_ADMIN
- */
+/** Paginierte Antwort für Rechnungsempfänger-Listen mit Navigation und Sortierung */
 @Data
 public class DebtorPageResponseDTO {
     private List<DebtorResponseDTO> content;

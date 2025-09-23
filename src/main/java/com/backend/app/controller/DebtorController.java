@@ -31,6 +31,7 @@ public class DebtorController {
 
 
 
+    /** Neuen Rechnungsempfänger anlegen für Privatliquidation */
     @PostMapping("/debtors")
     public ResponseEntity<DebtorResponseDTO> createDebtor(@RequestBody CreateDebtorRequestDTO createDebtorRequestDTO){
 
@@ -40,7 +41,7 @@ public class DebtorController {
 
     }
 
-  
+    /** Alle Rechnungsempfänger mit Pagination und Sortierung */
     @GetMapping("/debtors")
     public ResponseEntity<DebtorPageResponseDTO> getAllDebtors(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNo,
@@ -52,14 +53,14 @@ public class DebtorController {
         return new ResponseEntity<>(debtors, HttpStatus.OK);
     }
 
-  
+    /** Einzelnen Rechnungsempfänger nach ID abrufen */
     @GetMapping("/debtors/{id}")
     public ResponseEntity<DebtorResponseDTO> getDebtorById(@PathVariable Long id) {
         DebtorResponseDTO debtor = debtorService.getDebtorById(id);
         return new ResponseEntity<>(debtor, HttpStatus.OK);
     }
 
-
+    /** Rechnungsempfänger nach Namen suchen für Rechnungserstellung */
     @GetMapping(value = "/debtors", params = "name")
     public ResponseEntity<DebtorPageResponseDTO> getDebtorsByKeyword(
             @RequestParam("name") String keyword,

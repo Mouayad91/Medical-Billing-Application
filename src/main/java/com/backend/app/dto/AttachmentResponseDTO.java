@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import lombok.Data;
 
+/** Dokumentenmetadaten mit Download-Link für Korrespondenz-Archiv */
 @Data
 public class AttachmentResponseDTO {
     private Long id;
